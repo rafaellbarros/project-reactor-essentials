@@ -87,9 +87,55 @@ public class MonoTest {
                 , Subscription::cancel);
 
         log.info("--------------------------");
+        /*
         StepVerifier.create(mono)
                 .expectNext(name.toUpperCase())
-                .verifyComplete();
-        log.info("Everything working as intended");
+                .verifyComplete(); */
+
+    }
+
+    @Test
+    public void monoSubscriberSubscriptionRequest(){
+        String name = "Rafael Barros";
+        Mono<String> mono = Mono.just(name)
+                .log()
+                .map(String::toUpperCase);
+
+        mono.subscribe(s -> log.info("Value {}", s),
+                Throwable::printStackTrace,
+                () -> log.info("FINISHED")
+                , subscription -> subscription.request(5));
+
+        log.info("--------------------------");
+        /*
+        StepVerifier.create(mono)
+                .expectNext(name.toUpperCase())
+                .verifyComplete(); */
+
+    }
+
+    @Test
+    public void monoDoOnMethods(){
+        String name = "Rafael Barros";
+        Mono<Object> mono = Mono.just(name)
+                .log()
+                .map(String::toUpperCase)
+                        .doOnSubscribe(subscription -> log.info("Subscribed"))
+                        .doOnRequest(longNumber -> log.info ("Request received, starting  doing  sometthing"))
+                        .doOnNext(s -> log.info("Value is here. Executing doOnNext {}", s))
+                        .flatMap(s -> Mono.empty())
+                        .doOnNext(s -> log.info("Value is here. Executing doOnNext {}", s)) // will not be executed
+                        .doOnSuccess(s -> log.info("doOnSucess executed {}", s));
+
+        mono.subscribe(s -> log.info("Value {}", s),
+                Throwable::printStackTrace,
+                () -> log.info("FINISHED"));
+
+        log.info("--------------------------");
+        /*
+        StepVerifier.create(mono)
+                .expectNext(name.toUpperCase())
+                .verifyComplete(); */
+
     }
 }
