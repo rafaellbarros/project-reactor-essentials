@@ -8,6 +8,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/academy/devdojo/reactive/test/FluxTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/test/java/academy/devdojo/reactive/test/MonoTest.java">
           <value>
             <set />
